@@ -1,0 +1,386 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+* {
+    -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+}
+
+body {
+    -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
+    -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
+    -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
+    background-color:#E4E4E4;
+    background-image:linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
+    background-image:-webkit-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
+    background-image:-ms-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
+    background-image:-webkit-gradient(
+        linear,
+        left top,
+        left bottom,
+        color-stop(0, #A7A7A7),
+        color-stop(0.51, #E4E4E4)
+    );
+    background-attachment:fixed;
+    font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+    font-size:12px;
+    height:100%;
+    margin:0px;
+    padding:0px;
+    text-transform:uppercase;
+    width:100%;
+}
+
+/* Portrait layout (default) */
+.app {
+    background:url(../img/logo.png) no-repeat center top; /* 170px x 200px */
+    position:absolute;             /* position in the center of the screen */
+    left:50%;
+    top:50%;
+    height:50px;                   /* text area height */
+    width:225px;                   /* text area width */
+    text-align:center;
+    padding:180px 0px 0px 0px;     /* image height is 200px (bottom 20px are overlapped with text) */
+    margin:-115px 0px 0px -112px;  /* offset vertical: half of image height and text area height */
+                                   /* offset horizontal: half of text area width */
+}
+
+ Landscape layout (with min-width) 
+@media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
+    .app {
+        background-position:left center;
+        padding:75px 0px 75px 170px;  // padding-top + padding-bottom + text area = image height
+        margin:-90px 0px 0px -198px;  // offset vertical: half of image height 
+                                      // offset horizontal: half of image width and text area width 
+    }
+}
+
+
+
+h1 {
+    font-size:24px;
+    font-weight:normal;
+    margin:0px;
+    /*overflow:visible;*/
+    padding:0px;
+    text-align:center;
+}
+
+.event {
+    border-radius:4px;
+    -webkit-border-radius:4px;
+    color:#FFFFFF;
+    font-size:12px;
+    margin:0px 30px;
+    padding:2px 0px;
+}
+
+.event.listening {
+    background-color:#333333;
+    display:block;
+}
+
+.event.received {
+    background-color:#4B946A;
+    display:none;
+}
+
+@keyframes fade {
+    from { opacity: 1.0; }
+    50% { opacity: 0.4; }
+    to { opacity: 1.0; }
+}
+ 
+@-webkit-keyframes fade {
+    from { opacity: 1.0; }
+    50% { opacity: 0.4; }
+    to { opacity: 1.0; }
+}
+ 
+.blink {
+    animation:fade 3000ms infinite;
+    -webkit-animation:fade 3000ms infinite;
+}
+
+
+/**************************************
+          DEFAULTS
+***************************************/
+*{
+	padding:0;
+	margin:0;	
+}
+html {
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+}
+html, body{
+    height: 100%;
+	/*#e4e4e4; This can be changed to match the page backgrounds */	
+}
+body{
+	font-size:5vmin;	/* set the starting size for the app */
+}
+h2{
+	font-size:2.4rem;
+	line-height:1.6;
+	font-family:Baskerville, "Palatino Linotype", Palatino, "Century Schoolbook L", "Times New Roman", serif;	
+}
+p{
+	font-size:1.2rem;
+	line-height: 2;
+	font-family:Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;	
+}
+[data-role=footer]{
+	margin-top: 500px;
+}
+[data-role=footer], .page-wrap:after {
+  /* .push must be the same height as footer */
+	/* height: 50px; */
+}
+/*
+.page-wrap{
+	  min-height: 100%;
+	margin-bottom: 10%; 
+}
+*/
+.site-footer {
+    background: #6c0862;
+    color: #fff;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    height: 60px;
+    z-index: 3;
+    line-height: 2.5;
+    text-align: center;
+    font-size: 24px;
+}
+
+[data-role=pagelink].activetab#home{
+	background-image: url(../img/tab-home-normal.png);
+	background-repeat: no-repeat !important;
+	height: 2rem;
+}
+
+[data-role=pagelink].inactivetab#home{
+	background-image: url(../img/tab-home.png);
+	background-repeat: no-repeat !important;
+	height: 2rem;
+}
+
+[data-role=pagelink].activetab#geolocation{
+	background-image: url(../img/tab-map-normal.png);
+	background-repeat: no-repeat !important;
+	height: 2rem;
+}
+
+[data-role=pagelink].inactivetab#geolocation{
+	background-image: url(../img/tab-map.png);
+	background-repeat: no-repeat !important;
+    height: 2rem;
+}
+
+
+[data-role=pagelink].activetab#contacts{
+	background-image: url(../img/tab-contacts-normal.png);
+	background-repeat: no-repeat !important;
+	height: 2rem;
+}
+
+[data-role=pagelink].inactivetab#contacts{
+	background-image: url(../img/tab-contacts.png);
+	background-repeat: no-repeat !important;
+	height: 2rem;
+    
+}
+/**************************************
+          PAGES
+***************************************/
+
+[data-role=page]{
+	background-color:#6c0862;
+	color: #eee;
+	/*7rem is space for the app title 
+	as well as the navigation */
+	/*position:absolute;*/
+	top:7rem;
+    left: 0;
+	padding: 1rem;
+	display:none;
+}
+
+.active{
+	display:block;	
+	/* show one page at a time*/
+}
+
+[data-role="page"]{
+  position:absolute; 
+  top: 10rem; 
+   bottom: 60px;
+  color: #fff;	
+  z-index: 2;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1rem 0 1rem 0;
+  overflow: scroll;
+   /*** Items to trigger hardware acceleration ***/
+    -webkit-backface-visibility: hidden;
+   -moz-backface-visibility: hidden;
+   -ms-backface-visibility: hidden;
+   backface-visibility: hidden;
+   -webkit-perspective: 1000;
+   -moz-perspective: 1000;
+   -ms-perspective: 1000;
+   perspective: 1000;
+   -webkit-transform: translate3d(0, 0, 0);
+   -moz-transform: translate3d(0, 0, 0);
+   -ms-transform: translate3d(0, 0, 0);
+   /transform: translate3d(0, 0, 0);
+   	transition: background-color 0.9s ease;
+	/*transform: skew(10px,5px) rotate(45);*/
+	transform: matrix;
+	animation: ease-in;
+}
+[data-role=page].activetab{ 
+  left: 0;
+  right: 0;
+  z-index: 1;
+  /*background-color:#333;*/
+  border-top:1px solid #666;
+}
+
+
+[data-role="page"].show{
+  display:block
+  
+  
+}
+
+[data-role="page"].hidden{
+  
+  display:none;
+}
+
+[data-transition=slide]{
+	transition: background-color 0.5s ease;
+	transform: matrix;
+	animation: ease-in;
+}
+
+[data-role="content"]{
+  margin: 0 auto;
+  width:90%;
+}
+
+/**************************************
+          TITLE
+***************************************/
+.apptitle{
+	background-color: #333;
+	color: #fff;
+   /*overflow: visible;*/
+}
+.apptitle h1{
+    font-size: 2rem;
+	padding: 0.5rem 1.0rem;
+	text-align:center;
+	letter-spacing: 10px;
+	word-spacing: 10px;
+	text-transform:uppercase;
+    font-family: 'Open Sans', sans-serif;
+}
+
+/**************************************
+          NAVBAR 
+***************************************/
+.tabs{
+	height: 4rem;
+    width: 100%;
+}
+tabs ul{
+	list-style:none;
+	overflow:hidden;	
+	width: 70%;
+}
+.tabs ul li{
+	list-style:none;
+	/*overflow:hidden;*/
+}
+.tabs li{
+	float:left;
+	height:4rem;
+}
+
+.tabs li.tab{
+    background-color:#444;
+	float:left; 
+	height:2rem;
+	display:inline-block;
+	width:33.3333%;
+}
+
+.tabs li a{
+	display: block;
+	padding: 0.5rem 2rem;
+	font-size: 1rem;
+	line-height: 2rem;
+	height: 2rem;
+	color: #fff;
+	text-decoration: none !important;
+	border: none;
+	background-color: #555;
+	text-align: center;
+}
+
+.li-1-3{
+	width: 33.2%;	
+	/*  tabs each is 33% */
+}
+/*text and tab background*/
+.tabs > a:link{
+	text-decoration: none;
+}
+.tabs [data-role=pagelink]{
+	color: #777;	
+	background: #aaa;
+	display:block;
+	text-align:center;
+	height:2rem;
+	font-size:1rem;
+	font-weight:bold;
+	font-family: 'Lora', serif;
+	line-height:2rem;
+	padding:1rem 1rem;
+	text-decoration:none;
+	/* shadow helps make the non-active tabs receed */
+	-webkit-box-shadow: inset 2px 2px 6px rgba(0,0,0, 0.5);
+	-moz-box-shadow: inset 2px 2px 6px rgba(0,0,0, 0.5); 
+	box-shadow: inset 2px 2px 6px rgba(0,0,0, 0.5);
+}
+.tabs [data-role=pagelink].activetab{
+	background:#6c0862;	/* match the background of the screen */
+	color: #fff;		/* colour makes the active tab jump forward */
+	-webkit-box-shadow:none;
+	-moz-box-shadow:none;
+	box-shadow:none;
+}
+
+canvas{
+    max-width: 100%;   
+}
